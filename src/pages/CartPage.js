@@ -1,14 +1,17 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Format from 'react-currency-format'
 import { Link } from 'react-router-dom'
 import {CartItem} from '../components/CartItem'
 import { deleteItem } from '../redux/actions/cart'
+import {ModalUI} from '../components/UI/Modal'
 
 export const CartPage = () =>{
 
     const cartItems = useSelector(state => state.cart.cartItems)
     const dispatch = useDispatch()
+
+    const [isOpen,setIsOpen] = useState(false)
 
 
 
@@ -23,9 +26,14 @@ export const CartPage = () =>{
         dispatch(deleteItem(id))
     }
 
+    const showModal =  () =>{
+        setIsOpen(!isOpen)
+    }
+
 
     return (
         <div className="row mt-5 mb-4">
+            {<ModalUI show={isOpen} openHandler={showModal}/>}
         <div className="col-12">
             <div className="table-responsive">
                 <table className="table table-striped">
@@ -75,7 +83,7 @@ export const CartPage = () =>{
                     <Link to='/' className='btn btn-block btn-light'>Continue Shopping</Link>
                 </div>
                 <div className="col-sm-12 col-md-6 text-right">
-                    <button className="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                    <button className="btn btn-lg btn-block btn-success text-uppercase" onClick={()=> showModal()}>Checkout</button>
                 </div>
             </div>
         </div>
